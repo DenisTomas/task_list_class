@@ -2,7 +2,5 @@
 
 Flutter Class by Alura
 
-## Getting Started
-
 This project is a starting point for a Flutter application.
  It is a Task List App
