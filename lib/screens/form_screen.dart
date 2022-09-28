@@ -131,6 +131,7 @@ class _FormScreenState extends State<FormScreen> {
                             content: Text('Printing new task'),
                           ),
                         );
+                        Navigator.pop(context);
                       }
                     },
                     child: const Text('Add'),
