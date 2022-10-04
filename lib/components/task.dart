@@ -1,23 +1,23 @@
 import 'package:aula_projeto_inicial/components/difficulty.dart';
+import 'package:aula_projeto_inicial/data/task_dao.dart';
 import 'package:flutter/material.dart';
 
 class Task extends StatefulWidget {
   final String name;
-  final String photo;
+  final String image;
   final int difficulty;
 
-  Task(this.name, this.photo, this.difficulty, {Key? key})
-      : super(key: key);
+  Task(this.name, this.image, this.difficulty, {Key? key}) : super(key: key);
 
   int lvl = 0;
+
   @override
   State<Task> createState() => _TaskState();
 }
 
 class _TaskState extends State<Task> {
-
   bool assetOrNetwork() {
-    if (widget.photo.contains('http')) {
+    if (widget.image.contains('http')) {
       return false;
     }
     return true;
@@ -58,11 +58,11 @@ class _TaskState extends State<Task> {
                         borderRadius: BorderRadius.circular(8),
                         child: assetOrNetwork()
                             ? Image.asset(
-                                widget.photo,
+                                widget.image,
                                 fit: BoxFit.cover,
                               )
                             : Image.network(
-                                widget.photo,
+                                widget.image,
                                 fit: BoxFit.cover,
                               ),
                       ),
@@ -89,6 +89,32 @@ class _TaskState extends State<Task> {
                       height: 52,
                       width: 52,
                       child: ElevatedButton(
+                          onLongPress: () {
+                            showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                title: Text('Delete?'),
+                                content: Text('Do you want to delete?'),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('No')),
+                                  TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          TaskDao().delete(widget.name);
+                                        });
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('Yes')),
+                                ],
+                                elevation: 24.0,
+                              ),
+                              barrierDismissible: false,
+                            );
+                          },
                           onPressed: () {
                             setState(() {
                               widget.lvl++;
